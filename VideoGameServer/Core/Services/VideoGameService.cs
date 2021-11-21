@@ -9,19 +9,31 @@ namespace VideoGameServer.Core.Services
 {
     public class VideoGameService : IVideoGameService
     {
+        private readonly ICacheService _cacheService;
+        private bool clearVideoGames = false;
+        public VideoGameService(ICacheService cacheService)
+        {
+            _cacheService = cacheService;
+        }
+
         public IEnumerable<Platform> GetPlatforms(VideoGameDbContext videoGameDbContext)
         {
-            return videoGameDbContext.Platforms;
+            const string key = "PLATFORMS";
+            return _cacheService.Get<IEnumerable<Platform>>(key, () => { return videoGameDbContext.Platforms.ToArray(); });
         }
 
         public IEnumerable<Publisher> GetPublishers(VideoGameDbContext videoGameDbContext)
         {
-            return videoGameDbContext.Publishers;
+            const string key = "PUBLISHERS";
+            return _cacheService.Get<IEnumerable<Publisher>>(key, () => { return videoGameDbContext.Publishers.ToArray(); });
         }
 
         public IEnumerable<VideoGameResponse> GetVideoGames(VideoGameDbContext videoGameDbContext)
         {
-            return videoGameDbContext.VideoGames
+            const string key = "VIDEO_GAMES";
+            IEnumerable<VideoGameResponse> res =
+                _cacheService.Get<IEnumerable<VideoGameResponse>>(key, () => {
+                    return videoGameDbContext.VideoGames
                         .Include(x => x.Publisher)
                         .Include(x => x.VideoGamePlatforms)
                         .ThenInclude(x => x.Platform)
@@ -33,11 +45,19 @@ namespace VideoGameServer.Core.Services
                             Platforms = x.VideoGamePlatforms.Select(y => y.Platform),
                             Publisher = x.Publisher,
                             GameType = x.GameType
-                        });
+                        })
+                        .ToArray();
+                }, clearVideoGames);
+            if (clearVideoGames == true)
+            {
+                clearVideoGames = false;
+            }
+            return res;
         }
 
         public void Update(VideoGameDbContext videoGameDbContext, VideoGameUpdateRequest videoGameUpdateRequest)
         {
+            clearVideoGames = true;
             VideoGame videoGame =
                 videoGameDbContext
                 .VideoGames

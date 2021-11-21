@@ -31,6 +31,7 @@ namespace VideoGameServer
             services.AddDbContext<VideoGameDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("VideoGameConnection")));
             services.AddSingleton<IVideoGameService, VideoGameService>();
+            services.AddSingleton<ICacheService, CacheService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
