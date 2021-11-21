@@ -12,5 +12,10 @@ namespace VideoGameServer.Core.Services
         {
             return videoGameDbContext.Platforms;
         }
+
+        public IEnumerable<Publisher> GetPublishers(VideoGameDbContext videoGameDbContext)
+        {
+            return videoGameDbContext.Publishers;
+        }
     }
 }

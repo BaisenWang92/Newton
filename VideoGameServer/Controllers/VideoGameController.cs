@@ -27,5 +27,11 @@ namespace VideoGameServer.Controllers
         {
             return _videoGameService.GetPlatforms(_videoGameDbContext);
         }
+
+        [HttpGet("getPublishers")]
+        public IEnumerable<Publisher> GetPublishers()
+        {
+            return _videoGameService.GetPublishers(_videoGameDbContext);
+        }
     }
 }

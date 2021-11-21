@@ -99,19 +99,7 @@ export class VideoGameService {
   }
 
   public getPublishers(): Observable<Publisher[]>{
-    let a: Publisher[] = [{
-      id: 1,
-      name: 'PM Studios'
-    },
-    {
-      id: 2,
-      name: 'Milestone'
-    },
-    {
-      id: 3,
-      name: 'Bloober Team SA'
-    }]
-    return of(a); 
+    return this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPublishers');
   }
 
   public publisherListToOptions(publishers: Publisher[]): Option[]{
