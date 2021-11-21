@@ -1,1 +1,31 @@
-<p>list works!</p>
+<div class="container">
+    <div class="py-5 text-center">
+      <h2>Video Game List</h2>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+  
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Platform</th>
+          <th scope="col">Publisher</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let videoGame of videoGames">
+          <td>{{ videoGame.name }}</td>
+          <td>{{ videoGame.description }}</td>
+          <td>
+            <span *ngFor="let platform of videoGame.platforms; index as i ">{{ platform.name + ((i != videoGame.platforms.length - 1) ? ", " : "" )}}</span>
+          </td>
+          <td>{{ videoGame.publisher.name }}</td>
+          <td>
+            <a class="btn btn-sm btn-primary mr-2 btn-block" uiSref="details" [uiParams]="{ id: videoGame.id }" uiSrefActive="active">Edit</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

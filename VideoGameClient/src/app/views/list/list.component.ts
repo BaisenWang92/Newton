@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VideoGameService } from 'src/app/core/services/video-game.service';
 
 @Component({
   selector: 'app-list',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  videoGames;
+  constructor(private videoGameService: VideoGameService) { }
 
   ngOnInit(): void {
+    this.videoGameService.getVideoGames()
+    .subscribe(videoGames => this.videoGames = videoGames,
+      error => {},
+      () => {});
   }
-
 }

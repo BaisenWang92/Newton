@@ -1,1 +1,57 @@
-<p>details works!</p>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Video Game Details</h2>
+        <p class="lead">{{videoGame.name}}</p>
+    </div>
+    <div class="col-md-12">
+        <form class="form-field-full" [formGroup]="videoGameForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div>
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name" required maxlength="50">
+                  <p *ngIf="name.invalid">
+                    <ngb-alert *ngIf="name.errors.required" >Valid name is required.</ngb-alert>
+                  </p>
+                </div>
+                <div>
+                  <label for="platforms">Platforms</label>
+                  <ng-multiselect-dropdown
+                    placeholder="Platforms"
+                    [settings]="dropdownSettings"
+                    [data]="platformOptions"
+                    formControlName="platforms"
+                    requireds
+                  >
+                  </ng-multiselect-dropdown>
+                  <p *ngIf="platforms.invalid">
+                    <ngb-alert *ngIf="platforms.errors.required" >You need to select at least one platform.</ngb-alert>
+                  </p>
+                </div>
+                <div>
+                  <label for="publisher">Publisher</label>
+                  <select class="form-control" id="publisher" formControlName="publisher">
+                    <option *ngFor="let publisherOption of publisherOptions" value="{{publisherOption.key}}">{{publisherOption.value}}</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="gameType">Game Type</label>
+                  <select class="form-control" id="gameType" formControlName="gameType">
+                    <option *ngFor="let gameTypeOption of gameTypeOptions" value="{{gameTypeOption.key}}">{{gameTypeOption.value}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="name">Description</label>
+                <textarea rows="4" class="form-control" id="description" placeholder="Description" formControlName="description" maxlength="255"></textarea>
+              </div>
+            </div>
+  
+            <hr class="mb-4">
+            <a class="col-md-6 btn btn-sm btn-danger btn-lg btn-inline-block" uiSref="list" uiSrefActive="active">Back to List</a>
+            <button class="col-md-6 btn btn-sm btn-primary btn-lg btn-inline-block" type="submit" (click)="save()" [disabled]="isSubmitting">Save</button>
+          </form>
+    </div>
+</div>
+
+
