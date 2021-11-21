@@ -5,13 +5,14 @@ import { Platform } from '../models/platform';
 import { Publisher } from '../models/publisher';
 import { VideoGame } from '../models/video-game';
 import { Option } from '../models/option';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideoGameService {
-
-  constructor() { }
+  private readonly VIDEO_GAME_URL = '/api/VideoGame';
+  constructor(private apiService: ApiService) { }
 
   public getVideoGames(): Observable<VideoGame[]>{
     let a: VideoGame[] = [
@@ -80,27 +81,7 @@ export class VideoGameService {
   }
 
   public getPlatforms(): Observable<Platform[]>{
-    let a: Platform[] = [{
-      id: 1,
-      name: 'PS4'
-    },
-    {
-      id: 2,
-      name: 'XBO'
-    },
-    {
-      id: 3,
-      name: 'PS5'
-    },
-    {
-      id: 4,
-      name: 'XSX'
-    },
-    {
-      id: 5,
-      name: 'Win'
-    }]
-    return of(a);
+    return this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPlatforms');
   }
 
   public platformListToOptions(platforms: Platform[]): Option[]{
