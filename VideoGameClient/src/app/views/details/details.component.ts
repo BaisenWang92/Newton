@@ -4,6 +4,7 @@ import { NgbAlertConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { VideoGame } from 'src/app/core/models/video-game';
 import { VideoGameService } from 'src/app/core/services/video-game.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-details',
@@ -83,7 +84,44 @@ export class DetailsComponent implements OnInit {
   }
 
   save(){
-    alert("save fn");
-  }
+    let modalRef;
+    if(this.videoGameForm.invalid){
+      modalRef = this.modalService.open(ModalComponent);
+      modalRef.componentInstance.message = 'Inputs are invalid';
+      modalRef.componentInstance.allowClose = true;
+      return;
+    }
+    else{
+      modalRef = this.modalService.open(ModalComponent);
+      modalRef.componentInstance.message = 'Saving';
+      modalRef.componentInstance.allowClose = false;
+      this.isSubmitting = true;
+      let success = false;
 
+      this.videoGameService.save(
+        this.videoGame.id,
+        this.name.value,
+        this.description.value,
+        this.platforms.value,
+        this.publisher.value,
+        this.gameType.value
+      )
+      .subscribe(
+        ()=> {
+          this.modalService.dismissAll();
+          modalRef = this.modalService.open(ModalComponent);
+          modalRef.componentInstance.message = 'Update Successfully';
+          modalRef.componentInstance.allowClose = true;
+          success = true;
+        },
+        error => {},
+        () => {
+          this.isSubmitting = false;
+          if(success == false){
+            this.modalService.dismissAll();
+          }
+        }
+      );
+    }
+  }
 }

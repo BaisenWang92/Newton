@@ -33,5 +33,25 @@ namespace VideoGameServer.Controllers
         {
             return _videoGameService.GetPublishers(_videoGameDbContext);
         }
+
+        [HttpGet("getVideoGames")]
+        public IEnumerable<VideoGameResponse> GetVideoGames()
+        {
+            return _videoGameService.GetVideoGames(_videoGameDbContext);
+        }
+
+        [HttpPut("update")]
+        public void Update([FromBody] VideoGameUpdateRequest videoGameUpdateRequest)
+        {
+            try
+            {
+                _videoGameService.Update(_videoGameDbContext, videoGameUpdateRequest);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+        }
     }
 }

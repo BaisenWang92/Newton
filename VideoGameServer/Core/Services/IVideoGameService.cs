@@ -7,5 +7,7 @@ namespace VideoGameServer.Core.Services
     {
         IEnumerable<Platform> GetPlatforms(VideoGameDbContext videoGameDbContext);
         IEnumerable<Publisher> GetPublishers(VideoGameDbContext videoGameDbContext);
+        IEnumerable<VideoGameResponse> GetVideoGames(VideoGameDbContext videoGameDbContext);
+        void Update(VideoGameDbContext videoGameDbContext, VideoGameUpdateRequest videoGameUpdateRequest);
     }
 }

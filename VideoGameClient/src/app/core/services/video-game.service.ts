@@ -6,6 +6,7 @@ import { Publisher } from '../models/publisher';
 import { VideoGame } from '../models/video-game';
 import { Option } from '../models/option';
 import { ApiService } from './api.service';
+import { VideoGameUpdateRequest } from '../models/video-game-update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -15,69 +16,7 @@ export class VideoGameService {
   constructor(private apiService: ApiService) { }
 
   public getVideoGames(): Observable<VideoGame[]>{
-    let a: VideoGame[] = [
-      {
-        id: 1,
-        name: 'Iris.Fall',
-        description: 'A puzzle adventure game featuring striking visuals and a spellbinding theme of "light and shadow".',
-        platforms: [
-                    {
-                      id: 1,
-                      name: 'PS4'
-                    },
-                    {
-                      id: 2,
-                      name: 'XBO'
-                    }
-                  ],
-        publisher: {
-          id: 1,
-          name: 'PM Studios'
-        },
-        gameType: GameType.Online
-      },
-      {
-        id: 2,
-        name: 'Ride 4',
-        description: 'A motorcycle racing video game.',
-        platforms: [
-                    {
-                      id: 3,
-                      name: 'PS5'
-                    },
-                    {
-                      id: 4,
-                      name: 'XSX'
-                    }
-                  ],
-        publisher: {
-          id: 2,
-          name: 'Milestone'
-        },
-        gameType: GameType.Multiple
-      },
-      {
-        id: 3,
-        name: 'The Medium',
-        description: 'A psychological horror video game.',
-        platforms: [
-                    {
-                      id: 5,
-                      name: 'Win'
-                    },
-                    {
-                      id: 4,
-                      name: 'XSX'
-                    }
-                  ],
-        publisher: {
-          id: 3,
-          name: 'Bloober Team SA'
-        },
-        gameType: GameType.Single
-      }
-    ];
-    return of(a); 
+    return this.apiService.get<VideoGame[]>(this.VIDEO_GAME_URL + '/getVideoGames')
   }
 
   public getPlatforms(): Observable<Platform[]>{
@@ -138,5 +77,18 @@ export class VideoGameService {
     else{
       return [];
     }
+  }
+
+  public save(id: number, name: string, description: string,
+    platformOptions: Option[], publisherId: number, gameType: GameType){
+    let videoGameUpdateRequest: VideoGameUpdateRequest ={
+      id: id,
+      name: name,
+      description: description,
+      platformIds: platformOptions.map(platformOption => platformOption.key as number),
+      publisherId: publisherId,
+      gameType: gameType
+    }
+    return this.apiService.put<void>(this.VIDEO_GAME_URL + '/update', videoGameUpdateRequest);
   }
 }

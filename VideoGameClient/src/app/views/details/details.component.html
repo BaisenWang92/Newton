@@ -49,7 +49,7 @@
   
             <hr class="mb-4">
             <a class="col-md-6 btn btn-sm btn-danger btn-lg btn-inline-block" uiSref="list" uiSrefActive="active">Back to List</a>
-            <button class="col-md-6 btn btn-sm btn-primary btn-lg btn-inline-block" type="submit" (click)="save()" [disabled]="isSubmitting">Save</button>
+            <button class="col-md-6 btn btn-sm btn-primary btn-lg btn-inline-block" type="submit" (click)="save()" [disabled]="isSubmitting || videoGameForm.invalid">Save</button>
           </form>
     </div>
 </div>
