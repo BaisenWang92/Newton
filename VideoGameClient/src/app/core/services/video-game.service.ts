@@ -7,20 +7,28 @@ import { VideoGame } from '../models/video-game';
 import { Option } from '../models/option';
 import { ApiService } from './api.service';
 import { VideoGameUpdateRequest } from '../models/video-game-update-request';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideoGameService {
   private readonly VIDEO_GAME_URL = '/api/VideoGame';
-  constructor(private apiService: ApiService) { }
+  private clearVideoGames = false;
+
+  constructor(private apiService: ApiService,
+    private cacheService: CacheService) { }
 
   public getVideoGames(): Observable<VideoGame[]>{
-    return this.apiService.get<VideoGame[]>(this.VIDEO_GAME_URL + '/getVideoGames')
+    const key = "VIDEO_GAMES";
+    var res = this.cacheService.tryGet(key, this.apiService.get<VideoGame[]>(this.VIDEO_GAME_URL + '/getVideoGames'), this.clearVideoGames);
+    this.clearVideoGames = false;
+    return res;
   }
 
   public getPlatforms(): Observable<Platform[]>{
-    return this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPlatforms');
+    const key = "PLATFORMS";
+    return  this.cacheService.tryGet(key, this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPlatforms'));
   }
 
   public platformListToOptions(platforms: Platform[]): Option[]{
@@ -38,7 +46,8 @@ export class VideoGameService {
   }
 
   public getPublishers(): Observable<Publisher[]>{
-    return this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPublishers');
+    const key = "PUBLISHERS";
+    return  this.cacheService.tryGet(key, this.apiService.get<Platform[]>(this.VIDEO_GAME_URL + '/getPublishers'));
   }
 
   public publisherListToOptions(publishers: Publisher[]): Option[]{
@@ -89,6 +98,7 @@ export class VideoGameService {
       publisherId: publisherId,
       gameType: gameType
     }
+    this.clearVideoGames = true;
     return this.apiService.put<void>(this.VIDEO_GAME_URL + '/update', videoGameUpdateRequest);
   }
 }

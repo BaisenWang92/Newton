@@ -51,7 +51,11 @@ namespace VideoGameServer.Controllers
             {
 
             }
+        }
 
+        public void Dispose()
+        {
+            _videoGameDbContext.Dispose();
         }
     }
 }
