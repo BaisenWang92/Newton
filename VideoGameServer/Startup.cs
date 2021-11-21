@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoGameServer.Core;
+using VideoGameServer.Core.Services;
 
 namespace VideoGameServer
 {
@@ -25,6 +28,9 @@ namespace VideoGameServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<VideoGameDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("VideoGameConnection")));
+            services.AddSingleton<IVideoGameService, VideoGameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
