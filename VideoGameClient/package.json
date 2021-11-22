@@ -25,6 +25,7 @@
     "@uirouter/core": "^6.0.8",
     "@uirouter/rx": "^0.6.5",
     "bootstrap": "^4.5.0",
+    "ng-mocks": "^12.5.0",
     "ng-multiselect-dropdown": "^0.3.7",
     "rxjs": "~6.6.0",
     "tslib": "^1.14.1",

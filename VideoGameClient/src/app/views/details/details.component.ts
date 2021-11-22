@@ -8,12 +8,11 @@ import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  templateUrl: './details.component.html'
 })
 export class DetailsComponent implements OnInit {
   @Input() videoGame: VideoGame;
-  videoGameForm: FormGroup;
+  videoGameForm: FormGroup = null;
 
   get name() {
     return this.videoGameForm.get('name');

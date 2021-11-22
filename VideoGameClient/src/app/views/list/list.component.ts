@@ -5,8 +5,7 @@ import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  templateUrl: './list.component.html'
 })
 export class ListComponent implements OnInit {
 
